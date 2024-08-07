@@ -4,11 +4,17 @@ from pygame.locals import *
 
 class coin(pygame.sprite.Sprite):
 
+    vector = pygame.math.Vector2
+
     def __init__(self):
         super().__init__()
         self.surf = pygame.Surface((10, 10))
         self.surf.fill((255, 255, 30))
-        self.rect = self.surf.get_rect(center = (200, 200))
+        self.pos = self.vector(0, 0)
+        self.rect = self.surf.get_rect(center = self.pos)
+
+    def move(self):
+        self.rect = self.surf.get_rect(center = self.pos)
 
 class player(pygame.sprite.Sprite):
 
