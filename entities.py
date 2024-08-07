@@ -2,6 +2,14 @@
 import pygame
 from pygame.locals import *
 
+class coin(pygame.sprite.Sprite):
+
+    def __init__(self):
+        super().__init__()
+        self.surf = pygame.Surface((10, 10))
+        self.surf.fill((255, 255, 30))
+        self.rect = self.surf.get_rect(center = (200, 200))
+
 class player(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2

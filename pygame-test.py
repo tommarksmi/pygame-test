@@ -19,6 +19,7 @@ display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Game")
 
 player = entities.player(FRICTION, ACCEL, WIDTH, HEIGHT)
+coin = entities.coin()
 
 while True:
     for event in pygame.event.get():
@@ -29,6 +30,7 @@ while True:
     display_surface.fill((0, 0, 0))
 
     display_surface.blit(player.surf, player.rect)
+    display_surface.blit(coin.surf, (50, 50))
 
     pygame.display.update()
     FramePerSec.tick(FPS)
