@@ -1,8 +1,9 @@
-## Enity classes
 import pygame
 from pygame.locals import *
 
-class coin(pygame.sprite.Sprite):
+
+# noinspection SpellCheckingInspection
+class Coin(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2
 
@@ -11,13 +12,14 @@ class coin(pygame.sprite.Sprite):
         self.surf = pygame.Surface((10, 10))
         self.surf.fill((255, 255, 30))
         self.pos = self.vector(0, 0)
-        self.rect = self.surf.get_rect(center = (100, 100))
+        self.rect = self.surf.get_rect(center=(100, 100))
 
     def move(self):
         self.rect.topleft = self.pos
 
 
-class player(pygame.sprite.Sprite):
+# noinspection SpellCheckingInspection
+class Player(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2
 
@@ -37,17 +39,16 @@ class player(pygame.sprite.Sprite):
     def move(self):
         self.acc = self.vector(0, 0)
 
-        pressesd_keys = pygame.key.get_pressed()
+        pressed_keys = pygame.key.get_pressed()
 
-        if pressesd_keys[K_LEFT]:
+        if pressed_keys[K_LEFT]:
             self.acc.x = -self.accel_const
-        if pressesd_keys[K_RIGHT]:
+        if pressed_keys[K_RIGHT]:
             self.acc.x = self.accel_const
-        if pressesd_keys[K_UP]:
+        if pressed_keys[K_UP]:
             self.acc.y = -self.accel_const
-        if pressesd_keys[K_DOWN]:
+        if pressed_keys[K_DOWN]:
             self.acc.y = self.accel_const
-
 
         self.acc.x += self.vel.x * self.fric_const
         self.acc.y += self.vel.y * self.fric_const
@@ -65,5 +66,3 @@ class player(pygame.sprite.Sprite):
             self.pos.y = self.parent_height
 
         self.rect.topleft = self.pos
-
-

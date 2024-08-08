@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-import time
 import entities
 import sys
 import random
@@ -19,13 +18,15 @@ FramePerSec = pygame.time.Clock()
 display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Game")
 
+
 def populate_coins():
-    coin1 = entities.coin()
-    coin2 = entities.coin()
-    coin3 = entities.coin()
+    coin1 = entities.Coin()
+    coin2 = entities.Coin()
+    coin3 = entities.Coin()
     return [coin1, coin2, coin3]
 
-player = entities.player(FRICTION, ACCEL, WIDTH, HEIGHT)
+
+player = entities.Player(FRICTION, ACCEL, WIDTH, HEIGHT)
 coins = populate_coins()
 coin_group = pygame.sprite.Group(coins)
 collected_coins = pygame.sprite.Group()
@@ -63,5 +64,3 @@ while True:
 
     FramePerSec.tick(FPS)
     player.move()
-
-
