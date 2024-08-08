@@ -1,6 +1,16 @@
 import pygame
 from pygame.locals import *
 
+class Goal(pygame.sprite.Sprite):
+
+    def __init__(self, parent_width):
+        super().__init__()
+        self.surf = pygame.Surface((parent_width/3, 40))
+        self.surf.fill((230, 10, 10))
+        self.pos = self.pygame.math.Vector2()
+        self.rect = self.serf.get_rect()
+
+        # TODO:finish the Goal obeject, place on game surface complete game when "dropping" the coins off.
 
 # noinspection SpellCheckingInspection
 class Coin(pygame.sprite.Sprite):
@@ -16,6 +26,9 @@ class Coin(pygame.sprite.Sprite):
 
     def move(self):
         self.rect.topleft = self.pos
+
+    def move_to(self, pos):
+        self.rect.topleft = pos
 
 
 # noinspection SpellCheckingInspection

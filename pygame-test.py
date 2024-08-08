@@ -60,7 +60,10 @@ while True:
 
     if len(collided_coins) > 0:
         collected_coins.add(collided_coins)
-        print('collected_coins updated!')
+        print('collected_coins updated!' + str(type(collected_coins)))
+
+    for coin in collected_coins:
+        coin.pos = player.pos.x + 10, player.pos.y + 10
 
     FramePerSec.tick(FPS)
     player.move()
