@@ -28,7 +28,7 @@ def populate_coins():
 player = entities.player(FRICTION, ACCEL, WIDTH, HEIGHT)
 coins = populate_coins()
 coin_group = pygame.sprite.Group(coins)
-collected_coins = []
+collected_coins = pygame.sprite.Group()
 
 player.pos.x = WIDTH / 2
 player.pos.y = HEIGHT / 2
@@ -37,6 +37,7 @@ for coin in coins:
     coin.pos.x = random.randint(0, WIDTH)
     coin.pos.y = random.randint(0, HEIGHT)
     display_surface.blit(coin.surf, coin.pos)
+    coin.move()
 
 while True:
     for event in pygame.event.get():
@@ -57,11 +58,10 @@ while True:
     collided_coins = pygame.sprite.spritecollide(player, coin_group, True)
 
     if len(collided_coins) > 0:
-        collected_coins.append(collided_coins)
+        collected_coins.add(collided_coins)
         print('collected_coins updated!')
 
     FramePerSec.tick(FPS)
     player.move()
 
-    for coin in coins:
-        coin.move()
+
