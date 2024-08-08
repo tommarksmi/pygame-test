@@ -11,10 +11,11 @@ class coin(pygame.sprite.Sprite):
         self.surf = pygame.Surface((10, 10))
         self.surf.fill((255, 255, 30))
         self.pos = self.vector(0, 0)
-        self.rect = self.surf.get_rect(center = self.pos)
+        self.rect = self.surf.get_rect(center = (100, 100))
 
     def move(self):
-        self.rect = self.surf.get_rect(center = self.pos)
+        self.rect.topleft = self.pos
+
 
 class player(pygame.sprite.Sprite):
 
@@ -24,10 +25,8 @@ class player(pygame.sprite.Sprite):
         super().__init__()
         self.surf = pygame.Surface((30, 30))
         self.surf.fill((128, 255, 40))
-        self.rect = self.surf.get_rect(center = (10, 420))
-
-
-        self.pos = self.vector((10, 385))
+        self.pos = self.vector(surface_width, surface_height)
+        self.rect = self.surf.get_rect()
         self.vel = self.vector(0, 0)
         self.acc = self.vector(0, 0)
         self.fric_const = fric
@@ -65,6 +64,6 @@ class player(pygame.sprite.Sprite):
         if self.pos.y < 0:
             self.pos.y = self.parent_height
 
-        self.rect.midbottom = self.pos
+        self.rect.topleft = self.pos
 
 

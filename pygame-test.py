@@ -50,14 +50,16 @@ while True:
     display_surface.fill((0, 0, 0))
 
     display_surface.blit(player.surf, player.pos)
-    # display_surface.blit(coin.surf, (50, 50))
+
     for coin in coins:
         display_surface.blit(coin.surf, coin.pos)
     pygame.display.update()
     collided_coins = pygame.sprite.spritecollide(player, coin_group, True)
+
     if len(collided_coins) > 0:
         collected_coins.append(collided_coins)
         print('collected_coins updated!')
+
     FramePerSec.tick(FPS)
     player.move()
 
