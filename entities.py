@@ -23,11 +23,10 @@ class Goal(pygame.sprite.Sprite):
                        ((self.rect.width / 2) - (self.text_rect.width / 2),
                         (self.rect.height / 2) - (self.text_rect.height / 2)))
 
-        # TODO:finish the Goal obeject, place on game surface complete game when "dropping" the coins off.
+        # TODO:finish the Goal object, place on game surface complete game when "dropping" the coins off.
     def place_goal(self, goal_pos: tuple):
         self.rect.topleft = goal_pos
         self.text_rect.center = self.rect.center
-
 
 
 class Coin(pygame.sprite.Sprite):
