@@ -1,18 +1,35 @@
 import pygame
 from pygame.locals import *
 
+
 class Goal(pygame.sprite.Sprite):
+
+    vector = pygame.math.Vector2
 
     def __init__(self, parent_width):
         super().__init__()
         self.surf = pygame.Surface((parent_width/3, 40))
         self.surf.fill((230, 10, 10))
-        self.pos = self.pygame.math.Vector2()
-        self.rect = self.serf.get_rect()
+        self.pos = self.vector(parent_width/3, 0)
+        self.rect = self.surf.get_rect()
+
+        green = (0, 255, 0)
+        blue = (0, 0, 128)
+
+        self.font = pygame.font.Font('freesansbold.ttf', 28)
+        self.text = self.font.render('GOAL', True, green, blue)
+        self.text_rect = self.text.get_rect()
+        self.surf.blit(self.text,
+                       ((self.rect.width / 2) - (self.text_rect.width / 2),
+                        (self.rect.height / 2) - (self.text_rect.height / 2)))
 
         # TODO:finish the Goal obeject, place on game surface complete game when "dropping" the coins off.
+    def place_goal(self, goal_pos: tuple):
+        self.rect.topleft = goal_pos
+        self.text_rect.center = self.rect.center
 
-# noinspection SpellCheckingInspection
+
+
 class Coin(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2
@@ -31,7 +48,6 @@ class Coin(pygame.sprite.Sprite):
         self.rect.topleft = pos
 
 
-# noinspection SpellCheckingInspection
 class Player(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2

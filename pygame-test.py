@@ -9,12 +9,11 @@ vector = pygame.math.Vector2
 
 HEIGHT = 900
 WIDTH = 800
-ACCEL = 0.5
+ACCEL = 0.25
 FRICTION = -0.12
-FPS = 60
+FPS = 120
 
 FramePerSec = pygame.time.Clock()
-
 display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Game")
 
@@ -30,6 +29,11 @@ player = entities.Player(FRICTION, ACCEL, WIDTH, HEIGHT)
 coins = populate_coins()
 coin_group = pygame.sprite.Group(coins)
 collected_coins = pygame.sprite.Group()
+
+goal = entities.Goal(WIDTH)
+# goal.place_goal((WIDTH / 3, 0))
+print('goal pos values: ' + str(goal.pos.x) + str(goal.pos.y))
+print(goal.pos)
 
 player.pos.x = WIDTH / 2
 player.pos.y = HEIGHT / 2
@@ -50,7 +54,7 @@ while True:
             sys.exit()
 
     display_surface.fill((0, 0, 0))
-
+    display_surface.blit(goal.surf, goal.pos)
     display_surface.blit(player.surf, player.pos)
 
     for coin in coins:
