@@ -6,11 +6,12 @@ class Goal(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2
 
-    def __init__(self, parent_width):
+    def __init__(self, parent_width, parent_height, color: tuple, vert_position: str):
         super().__init__()
-        self.surf = pygame.Surface((parent_width/3, 40))
-        self.surf.fill((230, 10, 10))
-        self.pos = self.vector(parent_width/3, 0)
+        self.height = 40
+        self.surf = pygame.Surface((parent_width/3, self.height))
+        self.surf.fill(color)
+        self.pos = self.vector(parent_width/3, self.calc_vert_pos(parent_height, vert_position))
         self.rect = self.surf.get_rect()
 
         green = (0, 255, 0)
@@ -28,15 +29,23 @@ class Goal(pygame.sprite.Sprite):
         self.rect.topleft = goal_pos
         self.text_rect.center = self.rect.center
 
+    def calc_vert_pos(self, parent_height, vert_position) -> int:
+        if vert_position == 'top':
+            return 0
+        elif vert_position == 'bottom':
+            return parent_height - self.height
+        else:
+            print('Bad vert_position arg exiting.')
+            system.exit(1)
 
 class Coin(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2
 
-    def __init__(self):
+    def __init__(self, color: tuple):
         super().__init__()
         self.surf = pygame.Surface((10, 10))
-        self.surf.fill((255, 255, 30))
+        self.surf.fill(color)
         self.pos = self.vector(0, 0)
         self.rect = self.surf.get_rect(center=(100, 100))
 
