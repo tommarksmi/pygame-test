@@ -9,7 +9,8 @@ class Goal(pygame.sprite.Sprite):
     def __init__(self, parent_width, parent_height, color: tuple, vert_position: str):
         super().__init__()
         self.height = 40
-        self.surf = pygame.Surface((parent_width/3, self.height))
+        self.width = parent_width / 3
+        self.surf = pygame.Surface((self.width, self.height))
         self.surf.fill(color)
         self.pos = self.vector(parent_width/3, self.calc_vert_pos(parent_height, vert_position))
         self.rect = self.surf.get_rect()
@@ -103,3 +104,10 @@ class Player(pygame.sprite.Sprite):
             self.pos.y = self.parent_height
 
         self.rect.topleft = self.pos
+
+class Bounding_box(pygame.sprite.Sprite):
+    def __init__(self, bounded_sprite: Goal):
+        super().__init__()
+        self. pos = bounded_sprite.pos
+        self.surf = pygame.Surface((bounded_sprite.width + 40, bounded_sprite.height + 40))
+        self.rect = self.surf.get_rect()
