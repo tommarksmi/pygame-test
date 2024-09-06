@@ -16,10 +16,10 @@ display_surface = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
 pygame.display.set_caption("Game")
 
 
-def populate_coins(numb_of_coins: int) -> list:
+def populate_coins(numb_of_coins: int, coin_color: tuple) -> list:
     coins = []
     for num in range(0, numb_of_coins):
-        coin = entities.Coin(const.LIGHT_BLUE)
+        coin = entities.Coin(coin_color)
         coins.append(coin)
     return coins
 
@@ -33,7 +33,11 @@ bounding_box_goal_2 = entities.Bounding_box(goal_2)
 bounding_boxes = pygame.sprite.Group(bounding_box_goal, bounding_box_goal_2)
 
 player = entities.Player(const.FRICTION, const.ACCEL, const.WIDTH, const.HEIGHT)
-coins = populate_coins(10)
+yellow_coins = populate_coins(10, const.YELLOW)
+blue_coins = populate_coins(10, const.LIGHT_BLUE)
+coins = []
+coins.extend(blue_coins)
+coins.extend(yellow_coins)
 coin_group = pygame.sprite.Group(coins)
 collected_coins = pygame.sprite.Group()
 
@@ -54,9 +58,6 @@ for coin in coins:
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
-            # print('coins list: ' + str(coins))
-            # print('sprite group of coins: ' + str(coin_group))
-            # print('collected_coins: ' + str(collected_coins))
             pygame.quit()
             sys.exit()
 
@@ -70,13 +71,22 @@ while True:
     pygame.display.update()
     collided_coins = pygame.sprite.spritecollide(player, coin_group, True)
 
-    if len(collided_coins) > 0:
-        collected_coins.add(collided_coins)
+    if len(collided_coins) > 0 and player.coin_count == 0:
+        collected_coins.add(collided_coins[0])
+        player.coin_count += 1
         # print('collected_coins updated!' + str(type(collected_coins)))
         print('Coin count: ' + str(len(collected_coins)))
 
     for coin in collected_coins:
         coin.pos = player.pos.x + 10, player.pos.y + 10
+
+    collided_goal = pygame.sprite.spritecollide(player, goal_group, True)
+
+    if len(collided_goal) > 0 and len(collected_coins) > 0:
+        if collided_goal[0].color_code == collided_coins[0].color_code:
+            print('correct color coin returned to goal')
+
+
 
     FramePerSec.tick(const.FPS)
     player.move()

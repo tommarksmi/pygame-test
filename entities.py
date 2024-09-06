@@ -8,10 +8,11 @@ class Goal(pygame.sprite.Sprite):
 
     def __init__(self, parent_width, parent_height, color: tuple, vert_position: str):
         super().__init__()
+        self.color_code = color
         self.height = 40
         self.width = parent_width / 3
         self.surf = pygame.Surface((self.width, self.height))
-        self.surf.fill(color)
+        self.surf.fill(self.color_code)
         self.pos = self.vector(parent_width/3, self.calc_vert_pos(parent_height, vert_position))
         self.rect = self.surf.get_rect()
 
@@ -45,6 +46,7 @@ class Coin(pygame.sprite.Sprite):
 
     def __init__(self, color: tuple):
         super().__init__()
+        self.collor_code = color
         self.surf = pygame.Surface((10, 10))
         self.surf.fill(color)
         self.pos = self.vector(0, 0)
@@ -73,6 +75,7 @@ class Player(pygame.sprite.Sprite):
         self.accel_const = accel
         self.parent_width = surface_width
         self.parent_height = surface_height
+        self.coin_count = 0
 
     def move(self):
         self.acc = self.vector(0, 0)

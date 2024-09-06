@@ -10,3 +10,4 @@ class Constants():
         self.RED = (255, 10, 10)
         self.YELLOW = (255, 255, 30)
         self.LIGHT_BLUE = (10, 180, 255)
+        self.LIGHT_GREEN = (10, 255, 180)
