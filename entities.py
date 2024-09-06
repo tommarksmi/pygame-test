@@ -1,3 +1,4 @@
+import sys
 import pygame
 from pygame.locals import *
 
@@ -38,7 +39,8 @@ class Goal(pygame.sprite.Sprite):
             return parent_height - self.height
         else:
             print('Bad vert_position arg exiting.')
-            system.exit(1)
+            sys.exit(1)
+
 
 class Coin(pygame.sprite.Sprite):
 
@@ -46,7 +48,7 @@ class Coin(pygame.sprite.Sprite):
 
     def __init__(self, color: tuple):
         super().__init__()
-        self.collor_code = color
+        self.color_code = color
         self.surf = pygame.Surface((10, 10))
         self.surf.fill(color)
         self.pos = self.vector(0, 0)
@@ -108,7 +110,8 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.topleft = self.pos
 
-class Bounding_box(pygame.sprite.Sprite):
+
+class BoundingBox(pygame.sprite.Sprite):
     def __init__(self, bounded_sprite: Goal):
         super().__init__()
         self. pos = bounded_sprite.pos
