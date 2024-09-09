@@ -35,7 +35,7 @@ bounding_box_goal_2 = entities.BoundingBox(goal_2)
 bounding_boxes = pygame.sprite.Group(bounding_box_goal, bounding_box_goal_2)
 
 player = entities.Player(const.FRICTION, const.ACCEL, const.WIDTH, const.HEIGHT)
-yellow_coins = populate_coins(2, const.YELLOW)
+yellow_coins = populate_coins(2000, const.YELLOW)
 blue_coins = populate_coins(2, const.LIGHT_BLUE)
 coins = []
 coins.extend(blue_coins)
@@ -52,7 +52,7 @@ player.pos.y = const.HEIGHT / 2
 for coin in coins:
     # Adding a buffer around the border of the main game board to ensure coins don't display half off-screen
     coin.pos.x = random.randint(0 + (coin.rect.width * 2) , const.WIDTH - (coin.rect.width * 2))
-    coin.pos.y = random.randint(0 + (coin.rect.height * 2) + 40, const.HEIGHT - (coin.rect.height * 2) - 40)
+    coin.pos.y = random.randint(0 + (player.rect.height * 2) + 40, const.HEIGHT - (player.rect.height * 2) - 40)
     display_surface.blit(coin.surf, coin.pos)
     coin.move()
 
@@ -79,7 +79,7 @@ while True:
     collided_goal = pygame.sprite.spritecollide(player, goal_group, False)
 
     if len(collided_coins) > 0 and player.coin_count == 0:
-        collected_coins.add(collided_coins[0])
+        collected_coins.add(collided_coins.pop())
         player.coin_count += 1
 
     for coin in collected_coins:
@@ -98,8 +98,11 @@ while True:
         # print('Collided coins len: ' + str(len(collided_coins)))
         # print('Collided goals len: ' + str(len(collided_goal)))
         print('player pos: ' + str(player.pos))
-        for coin in coins:
-            print('coin at: ' + str(coin.pos))
+        for c in collided_coins:
+            print(str(c))
+        print('len of collided_coins: ' + str(len(collected_coins)))
+        # for coin in coins:
+        #     print('coin at: ' + str(coin.pos))
 
 
 
