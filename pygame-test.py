@@ -35,8 +35,8 @@ bounding_box_goal_2 = entities.BoundingBox(goal_2)
 bounding_boxes = pygame.sprite.Group(bounding_box_goal, bounding_box_goal_2)
 
 player = entities.Player(const.FRICTION, const.ACCEL, const.WIDTH, const.HEIGHT)
-yellow_coins = populate_coins(2000, const.YELLOW)
-blue_coins = populate_coins(2, const.LIGHT_BLUE)
+yellow_coins = populate_coins(10, const.YELLOW)
+blue_coins = populate_coins(10, const.LIGHT_BLUE)
 coins = []
 coins.extend(blue_coins)
 coins.extend(yellow_coins)
@@ -71,32 +71,42 @@ while True:
     goal_2.place_goal(goal_2.pos)
 
     display_surface.blit(player.surf, player.pos)
-
     for coin in coins:
         display_surface.blit(coin.surf, coin.pos)
     pygame.display.update()
     collided_coins = pygame.sprite.spritecollide(player, coin_group, False)
     collided_goal = pygame.sprite.spritecollide(player, goal_group, False)
 
+
+
+    # Check for player coin collision if true udpate player coin count
     if len(collided_coins) > 0 and player.coin_count == 0:
-        collected_coins.add(collided_coins.pop())
+        held_coin = collided_coins.pop()
+        print('held coin updated...')
+        collected_coins.add(held_coin)
         player.coin_count += 1
 
-    for coin in collected_coins:
-        coin.pos = player.pos.x + 10, player.pos.y + 10
-
-    if len(collided_goal) > 0 and len(collected_coins) > 0:
-        held_coin = collected_coins.sprites()[0]
+    # Checks for collision with goal while holding a coin
+    if len(collided_goal) > 0 and held_coin:
+        print('player goal collision')
+        # held_coin = collected_coins.sprites()[0]
+        # print('held coind updated: ' + str(held_coin))
         if collided_goal[0].color_code == held_coin.color_code:
             collected_coins.remove(held_coin)
             coins.remove(held_coin)
             player.coin_count -= 1
+            held_coin = None
+
+    for coin in collected_coins:
+            coin.pos = player.pos.x + 10, player.pos.y + 10
 
     pressed_keys = pygame.key.get_pressed()
     if pressed_keys[K_i]:
         # print('Collected coins len: ' + str(len(collected_coins)))
         # print('Collided coins len: ' + str(len(collided_coins)))
         # print('Collided goals len: ' + str(len(collided_goal)))
+        print('len of coins: ' + str(len(coins)))
+        print('coins: ' + str(coins))
         print('player pos: ' + str(player.pos))
         for c in collided_coins:
             print(str(c))
