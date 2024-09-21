@@ -78,11 +78,11 @@ while True:
     collided_goal = pygame.sprite.spritecollide(player, goal_group, False)
 
 
-
     # Check for player coin collision if true udpate player coin count
     if len(collided_coins) > 0 and player.coin_count == 0:
         held_coin = collided_coins.pop()
         print('held coin updated...')
+        #TODO find a way to clear contents of collected_coins before adding the new held coin
         collected_coins.add(held_coin)
         player.coin_count += 1
 
@@ -91,9 +91,12 @@ while True:
         print('player goal collision')
         # held_coin = collected_coins.sprites()[0]
         # print('held coind updated: ' + str(held_coin))
+        print('goal color: ' + str(collided_goal[0].color_code) + '  coin color: ' + str(held_coin.color_code))
         if collided_goal[0].color_code == held_coin.color_code:
             collected_coins.remove(held_coin)
+            collected_coins.empty()
             coins.remove(held_coin)
+            print('held coin removed')
             player.coin_count -= 1
             held_coin = None
 
@@ -106,11 +109,17 @@ while True:
         # print('Collided coins len: ' + str(len(collided_coins)))
         # print('Collided goals len: ' + str(len(collided_goal)))
         print('len of coins: ' + str(len(coins)))
-        print('coins: ' + str(coins))
+        # print('coins: ' + str(coins))
         print('player pos: ' + str(player.pos))
         for c in collided_coins:
             print(str(c))
         print('len of collided_coins: ' + str(len(collected_coins)))
+
+        try:
+            if (held_coin):
+                print('held coin color: ' + str(held_coin.color_code))
+        except:
+            print('held_coin not assigned nothing to print')
         # for coin in coins:
         #     print('coin at: ' + str(coin.pos))
 
