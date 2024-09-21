@@ -53,9 +53,8 @@ for coin in coins:
     # Adding a buffer around the border of the main game board to ensure coins don't display half off-screen
     coin.pos.x = random.randint(0 + (coin.rect.width * 2) , const.WIDTH - (coin.rect.width * 2))
     coin.pos.y = random.randint(0 + (player.rect.height * 2) + 40, const.HEIGHT - (player.rect.height * 2) - 40)
-    display_surface.blit(coin.surf, coin.pos)
+    # display_surface.blit(coin.surf, coin.pos)
     coin.move()
-
 
 while True:
     for event in pygame.event.get():
@@ -70,7 +69,12 @@ while True:
     display_surface.blit(goal_2.surf, goal_2.pos)
     goal_2.place_goal(goal_2.pos)
 
+    if len(collected_coins) > 0:
+        for c in collected_coins:
+            display_surface.blit(c.surf, c.pos)
+
     display_surface.blit(player.surf, player.pos)
+
     for coin in coins:
         display_surface.blit(coin.surf, coin.pos)
     pygame.display.update()
@@ -78,8 +82,7 @@ while True:
     collided_goal = pygame.sprite.spritecollide(player, goal_group, False)
 
 
-
-    # Check for player coin collision if true udpate player coin count
+    # Check for player coin collision if true update player coin count
     if len(collided_coins) > 0 and player.coin_count == 0:
         held_coin = collided_coins.pop()
         print('held coin updated...')
@@ -89,16 +92,15 @@ while True:
     # Checks for collision with goal while holding a coin
     if len(collided_goal) > 0 and held_coin:
         print('player goal collision')
-        # held_coin = collected_coins.sprites()[0]
-        # print('held coind updated: ' + str(held_coin))
         if collided_goal[0].color_code == held_coin.color_code:
             collected_coins.remove(held_coin)
+            coin_group.remove(held_coin)
             coins.remove(held_coin)
             player.coin_count -= 1
             held_coin = None
 
     for coin in collected_coins:
-            coin.pos = player.pos.x + 10, player.pos.y + 10
+        coin.pos = player.pos.x + 10, player.pos.y + 10
 
     pressed_keys = pygame.key.get_pressed()
     if pressed_keys[K_i]:
