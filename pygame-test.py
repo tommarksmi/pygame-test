@@ -4,6 +4,8 @@ import entities
 import sys
 import random
 import constants
+import pygame_widgets
+from pygame_widgets.button import Button
 
 # TODO: create game initializer class to make it easier to setup each level
 # and redraw gameboard from with in game.
@@ -16,12 +18,25 @@ display_surface = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
 pygame.display.set_caption("Game")
 
 
-def populate_coins(numb_of_coins: int, coin_color: tuple) -> list:
+def generate_coins(numb_of_coins: int, coin_color: tuple) -> list:
     populated_coins = []
     for num in range(0, numb_of_coins):
         new_coin = entities.Coin(coin_color)
         populated_coins.append(new_coin)
     return populated_coins
+
+def populate_coins() -> list:
+    coins = []
+    yellow_coins = generate_coins(1, const.YELLOW)
+    blue_coins = generate_coins(0, const.LIGHT_BLUE)
+    coins.extend(blue_coins)
+    coins.extend(yellow_coins)
+    return coins
+
+def reset_game(g_round: entities.GameRound):
+    player.pos.x = const.WIDTH / 2
+    player.pos.y = const.HEIGHT / 2
+    g_round.update_coins_in_play(populate_coins())
 
 goals = []
 goal = entities.Goal(const.WIDTH, const.HEIGHT, const.YELLOW, 'top')
@@ -35,12 +50,12 @@ bounding_box_goal_2 = entities.BoundingBox(goal_2)
 bounding_boxes = pygame.sprite.Group(bounding_box_goal, bounding_box_goal_2)
 
 player = entities.Player(const.FRICTION, const.ACCEL, const.WIDTH, const.HEIGHT)
-yellow_coins = populate_coins(10, const.YELLOW)
-blue_coins = populate_coins(10, const.LIGHT_BLUE)
-coins = []
-coins.extend(blue_coins)
-coins.extend(yellow_coins)
-coin_group = pygame.sprite.Group(coins)
+
+coins = populate_coins()
+
+game_round = entities.GameRound(coins)
+
+coin_group = pygame.sprite.Group(game_round.coins_in_play)
 collected_coins = pygame.sprite.Group()
 
 print('goal pos values: ' + str(goal.pos.x) + str(goal.pos.y))
@@ -49,21 +64,33 @@ print(goal.pos)
 player.pos.x = const.WIDTH / 2
 player.pos.y = const.HEIGHT / 2
 
-for coin in coins:
+
+# move loop into function and take a list of coins in then call from reset method
+for coin in game_round.coins_in_play:
     # Adding a buffer around the border of the main game board to ensure coins don't display half off-screen
     coin.pos.x = random.randint(0 + (coin.rect.width * 2) , const.WIDTH - (coin.rect.width * 2))
     coin.pos.y = random.randint(0 + (player.rect.height * 2) + 40, const.HEIGHT - (player.rect.height * 2) - 40)
     # display_surface.blit(coin.surf, coin.pos)
     coin.move()
 
+restart_button = Button(
+    display_surface,
+    const.WIDTH / 2,
+    const.HEIGHT / 2,
+    125,
+    30,
+    text= 'Play Again?',
+    onClick=lambda: reset_game(game_round)
+    )
+
 while True:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
     display_surface.fill((0, 0, 0))
-
     display_surface.blit(goal.surf, goal.pos)
     goal.place_goal(goal.pos)
     display_surface.blit(goal_2.surf, goal_2.pos)
@@ -75,9 +102,9 @@ while True:
 
     display_surface.blit(player.surf, player.pos)
 
-    for coin in coins:
+    for coin in game_round.coins_in_play:
         display_surface.blit(coin.surf, coin.pos)
-    pygame.display.update()
+    # pygame.display.update()
     collided_coins = pygame.sprite.spritecollide(player, coin_group, False)
     collided_goal = pygame.sprite.spritecollide(player, goal_group, False)
 
@@ -95,28 +122,32 @@ while True:
         if collided_goal[0].color_code == held_coin.color_code:
             collected_coins.remove(held_coin)
             coin_group.remove(held_coin)
-            coins.remove(held_coin)
+            game_round.coins_in_play.remove(held_coin)
             player.coin_count -= 1
             held_coin = None
 
     for coin in collected_coins:
         coin.pos = player.pos.x + 10, player.pos.y + 10
 
+    if len(game_round.coins_in_play) <= 0:
+        pygame_widgets.update(events)
+    else:
+        player.move()
+
     pressed_keys = pygame.key.get_pressed()
     if pressed_keys[K_i]:
+        pass
         # print('Collected coins len: ' + str(len(collected_coins)))
         # print('Collided coins len: ' + str(len(collided_coins)))
-        # print('Collided goals len: ' + str(len(collided_goal)))
-        print('len of coins: ' + str(len(coins)))
-        print('coins: ' + str(coins))
-        print('player pos: ' + str(player.pos))
-        for c in collided_coins:
-            print(str(c))
-        print('len of collided_coins: ' + str(len(collected_coins)))
-        # for coin in coins:
-        #     print('coin at: ' + str(coin.pos))
-
-
+        # # print('Collided goals len: ' + str(len(collided_goal)))
+        # print('len of coins: ' + str(len(coins)))
+        # print('coins: ' + str(coins))
+        # print('player pos: ' + str(player.pos))
+        # for c in collided_coins:
+        #     print(str(c))
+        # print('len of collided_coins: ' + str(len(collected_coins)))
+        # # for coin in coins:
+        # #     print('coin at: ' + str(coin.pos))
 
     FramePerSec.tick(const.FPS)
-    player.move()
+    pygame.display.update()

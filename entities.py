@@ -122,3 +122,10 @@ class BoundingBox(pygame.sprite.Sprite):
         self. pos = bounded_sprite.pos
         self.surf = pygame.Surface((bounded_sprite.width + 40, bounded_sprite.height + 40))
         self.rect = self.surf.get_rect()
+
+class GameRound():
+    def __init__(self, coins: list):
+        self.coins_in_play = coins
+
+    def update_coins_in_play(self, coins: list):
+        self.coins_in_play = coins
