@@ -30,8 +30,8 @@ def generate_coins(numb_of_coins: int, coin_color: tuple) -> list:
 
 def populate_coins() -> list:
     coins = []
-    yellow_coins = generate_coins(5, const.YELLOW)
-    blue_coins = generate_coins(5, const.LIGHT_BLUE)
+    yellow_coins = generate_coins(1, const.YELLOW)
+    blue_coins = generate_coins(0, const.LIGHT_BLUE)
     coins.extend(blue_coins)
     coins.extend(yellow_coins)
     return coins
@@ -150,6 +150,7 @@ while True:
 
     if len(game_round.coins_in_play) <= 0:
         pygame_widgets.update(events)
+        player.stop()
     else:
         player.move()
         coin_layout

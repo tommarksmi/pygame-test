@@ -115,6 +115,12 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.topleft = self.pos
 
+    def stop(self):
+        self.acc.x = 0
+        self.acc.y = 0
+        self.vel.x = 0
+        self.vel.y = 0
+
 
 class BoundingBox(pygame.sprite.Sprite):
     def __init__(self, bounded_sprite: Goal):
