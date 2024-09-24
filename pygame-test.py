@@ -13,6 +13,9 @@ from pygame_widgets.button import Button
 pygame.init()
 const = constants.Constants()
 
+bkg_img = pygame.image.load('game-background.jpg')
+img_rect = bkg_img.get_rect()
+
 FramePerSec = pygame.time.Clock()
 display_surface = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
 pygame.display.set_caption("Game")
@@ -108,7 +111,7 @@ while True:
             pygame.quit()
             sys.exit()
 
-    display_surface.fill((0, 0, 0))
+    display_surface.blit(bkg_img, img_rect)
     display_surface.blit(goal.surf, goal.pos)
     goal.place_goal(goal.pos)
     display_surface.blit(goal_2.surf, goal_2.pos)
