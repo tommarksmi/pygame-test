@@ -126,6 +126,8 @@ class BoundingBox(pygame.sprite.Sprite):
 class GameRound():
     def __init__(self, coins: list):
         self.coins_in_play = coins
+        self.coin_group = pygame.sprite.Group(coins)
 
     def update_coins_in_play(self, coins: list):
         self.coins_in_play = coins
+        self.coin_group.add(coins)
