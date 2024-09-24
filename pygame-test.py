@@ -27,8 +27,8 @@ def generate_coins(numb_of_coins: int, coin_color: tuple) -> list:
 
 def populate_coins() -> list:
     coins = []
-    yellow_coins = generate_coins(1, const.YELLOW)
-    blue_coins = generate_coins(0, const.LIGHT_BLUE)
+    yellow_coins = generate_coins(5, const.YELLOW)
+    blue_coins = generate_coins(5, const.LIGHT_BLUE)
     coins.extend(blue_coins)
     coins.extend(yellow_coins)
     return coins
@@ -47,6 +47,10 @@ def coin_layout(coins: list):
         coin.pos.y = random.randint(0 + (player.rect.height * 2) + 40, const.HEIGHT - (player.rect.height * 2) - 40)
         # display_surface.blit(coin.surf, coin.pos)
         coin.move()
+
+def quit_game():
+    pygame.quit()
+    sys.exit()
 
 goals = []
 goal = entities.Goal(const.WIDTH, const.HEIGHT, const.YELLOW, 'top')
@@ -83,8 +87,18 @@ restart_button = Button(
     const.HEIGHT / 2,
     125,
     30,
-    text= 'Play Again?',
+    text= 'Play Again',
     onClick=lambda: reset_game(game_round)
+    )
+
+exit_button = Button(
+    display_surface,
+    const.WIDTH / 2 - 150,
+    const.HEIGHT / 2,
+    125,
+    30,
+    text= 'Exit',
+    onClick=lambda: quit_game()
     )
 
 while True:
@@ -116,13 +130,11 @@ while True:
     # Check for player coin collision if true update player coin count
     if len(collided_coins) > 0 and player.coin_count == 0:
         held_coin = collided_coins.pop()
-        print('held coin updated...')
         collected_coins.add(held_coin)
         player.coin_count += 1
 
     # Checks for collision with goal while holding a coin
     if len(collided_goal) > 0 and held_coin:
-        print('player goal collision')
         if collided_goal[0].color_code == held_coin.color_code:
             collected_coins.remove(held_coin)
             game_round.coin_group.remove(held_coin)
