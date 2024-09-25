@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import entities
 import sys
+import pathlib
 import random
 import constants
 import pygame_widgets
@@ -15,6 +16,11 @@ const = constants.Constants()
 
 bkg_img = pygame.image.load('game-background.jpg')
 img_rect = bkg_img.get_rect()
+
+def load_coin_imgaes() -> list:
+    wdir = pathlib.Path().cwd()
+    coin_path = wdir.joinpath('coin-images')
+    for file in
 
 FramePerSec = pygame.time.Clock()
 display_surface = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
