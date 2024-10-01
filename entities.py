@@ -1,5 +1,7 @@
 import sys
 import pygame
+import pathlib
+import os
 from pygame.locals import *
 
 
@@ -45,6 +47,8 @@ class Goal(pygame.sprite.Sprite):
 class Coin(pygame.sprite.Sprite):
 
     vector = pygame.math.Vector2
+    images = []
+    current_image_index = 0
 
     def __init__(self, color: tuple):
         super().__init__()
@@ -53,12 +57,32 @@ class Coin(pygame.sprite.Sprite):
         self.surf.fill(color)
         self.pos = self.vector(0, 0)
         self.rect = self.surf.get_rect()
+        self.images = self.load_coin_images()
+        self.image = self.images[0]
 
     def move(self):
         self.rect.topleft = self.pos
 
     def move_to(self, pos):
         self.rect.topleft = pos
+
+    def load_coin_images(self) -> list:
+        wdir = pathlib.Path().cwd()
+        coin_path = wdir.joinpath('coin-images')
+        print(str(coin_path))
+        imgs = []
+        for f in os.listdir(coin_path):
+            img = pygame.image.load( coin_path.joinpath(f) )
+            imgs.append(img)
+        return imgs
+
+    def update_image(self):
+        if self.current_image_index == len(self.images) - 1:
+            self.current_image_index = 0
+        else:
+            self.current_image_index += 1
+        self.image = images[self.current_image_index]
+
 
 
 class Player(pygame.sprite.Sprite):

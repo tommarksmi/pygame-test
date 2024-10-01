@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import entities
 import sys
-import pathlib
 import random
 import constants
 import pygame_widgets
@@ -16,11 +15,6 @@ const = constants.Constants()
 
 bkg_img = pygame.image.load('game-background.jpg')
 img_rect = bkg_img.get_rect()
-
-def load_coin_imgaes() -> list:
-    wdir = pathlib.Path().cwd()
-    coin_path = wdir.joinpath('coin-images')
-    for file in
 
 FramePerSec = pygame.time.Clock()
 display_surface = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
@@ -75,6 +69,7 @@ bounding_boxes = pygame.sprite.Group(bounding_box_goal, bounding_box_goal_2)
 player = entities.Player(const.FRICTION, const.ACCEL, const.WIDTH, const.HEIGHT)
 
 coins = populate_coins()
+# coin_imgs = load_coin_imgaes()
 
 game_round = entities.GameRound(coins)
 
@@ -130,7 +125,7 @@ while True:
     display_surface.blit(player.surf, player.pos)
 
     for coin in game_round.coins_in_play:
-        display_surface.blit(coin.surf, coin.pos)
+        display_surface.blit(coin.image, coin.pos)
     # pygame.display.update()
     collided_coins = pygame.sprite.spritecollide(player, game_round.coin_group, False)
     collided_goal = pygame.sprite.spritecollide(player, goal_group, False)
