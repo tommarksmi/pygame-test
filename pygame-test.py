@@ -105,6 +105,7 @@ exit_button = Button(
     onClick=lambda: quit_game()
     )
 
+animation_tick_count = 0
 while True:
     events = pygame.event.get()
     for event in events:
@@ -120,16 +121,21 @@ while True:
 
     if len(collected_coins) > 0:
         for c in collected_coins:
-            display_surface.blit(c.surf, c.pos)
+            display_surface.blit(c.image, c.rect.topleft)
 
     display_surface.blit(player.surf, player.pos)
 
     for coin in game_round.coins_in_play:
-        display_surface.blit(coin.image, coin.pos)
-    # pygame.display.update()
+        display_surface.blit(coin.image, coin.rect.topleft)
     collided_coins = pygame.sprite.spritecollide(player, game_round.coin_group, False)
     collided_goal = pygame.sprite.spritecollide(player, goal_group, False)
 
+    # Animations triggered here
+    if animation_tick_count % 10 == 0:
+        for coin in game_round.coins_in_play:
+            coin.update_image()
+    animation_tick_count += 1
+    #
 
     # Check for player coin collision if true update player coin count
     if len(collided_coins) > 0 and player.coin_count == 0:
@@ -147,7 +153,8 @@ while True:
             held_coin = None
 
     for coin in collected_coins:
-        coin.pos = player.pos.x + 10, player.pos.y + 10
+        # coin.rect.center = player.pos.x + 10, player.pos.y + 10
+        coin.rect.center = player.rect.center
 
     if len(game_round.coins_in_play) <= 0:
         pygame_widgets.update(events)
@@ -158,12 +165,12 @@ while True:
 
     pressed_keys = pygame.key.get_pressed()
     if pressed_keys[K_i]:
-        pass
+        print('Mouse position: ' + str(pygame.mouse.get_pos()))
         print('Collected coins len: ' + str(len(collected_coins)))
         print('Collided coins len: ' + str(len(collided_coins)))
         # # print('Collided goals len: ' + str(len(collided_goal)))
         print('len of coins: ' + str(len(game_round.coins_in_play)))
-        print('held coin: ' + str(held_coin))
+        print('held coin: ' + str( held_coin if held_coin else 'none'))
         print('player coin count: ' + str(player.coin_count))
         # print('coins: ' + str(coins))
         # print('player pos: ' + str(player.pos))

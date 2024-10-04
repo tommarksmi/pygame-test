@@ -53,16 +53,19 @@ class Coin(pygame.sprite.Sprite):
     def __init__(self, color: tuple):
         super().__init__()
         self.color_code = color
-        self.surf = pygame.Surface((10, 10))
-        self.surf.fill(color)
+        # self.surf = pygame.Surface((10, 10))
+        # self.surf.fill(color)
         self.pos = self.vector(0, 0)
-        self.rect = self.surf.get_rect()
+        # self.rect = self.surf.get_rect()
         self.images = self.load_coin_images()
         self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        # self.center = self.rect.center
 
     def move(self):
-        self.rect.topleft = self.pos
+        self.rect.center = self.pos
 
+    ## move_to is not used think about removing...
     def move_to(self, pos):
         self.rect.topleft = pos
 
@@ -81,7 +84,8 @@ class Coin(pygame.sprite.Sprite):
             self.current_image_index = 0
         else:
             self.current_image_index += 1
-        self.image = images[self.current_image_index]
+        self.image = self.images[self.current_image_index]
+        # self.rect = self.image.get_rect()
 
 
 
