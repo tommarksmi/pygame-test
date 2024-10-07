@@ -7,6 +7,8 @@ import constants
 import pygame_widgets
 from pygame_widgets.button import Button
 
+from constants import Constants
+
 # TODO: create game initializer class to make it easier to setup each level
 # and redraw gameboard from with in game.
 
@@ -30,7 +32,7 @@ def generate_coins(numb_of_coins: int, coin_color: tuple) -> list:
 
 def populate_coins() -> list:
     coins = []
-    yellow_coins = generate_coins(1, const.YELLOW)
+    yellow_coins = generate_coins(const.COIN_COUNT, const.YELLOW)
     blue_coins = generate_coins(0, const.LIGHT_BLUE)
     coins.extend(blue_coins)
     coins.extend(yellow_coins)
@@ -49,7 +51,7 @@ def coin_layout(coins: list):
         coin.pos.x = random.randint(0 + (coin.rect.width * 2) , const.WIDTH - (coin.rect.width * 2))
         coin.pos.y = random.randint(0 + (player.rect.height * 2) + 40, const.HEIGHT - (player.rect.height * 2) - 40)
         # display_surface.blit(coin.surf, coin.pos)
-        coin.move()
+        coin.move_coin()
 
 def quit_game():
     pygame.quit()
@@ -106,6 +108,7 @@ exit_button = Button(
     )
 
 animation_tick_count = 0
+held_coin = None
 while True:
     events = pygame.event.get()
     for event in events:
@@ -161,7 +164,6 @@ while True:
         player.stop()
     else:
         player.move()
-        coin_layout
 
     pressed_keys = pygame.key.get_pressed()
     if pressed_keys[K_i]:
@@ -177,8 +179,8 @@ while True:
         for c in collided_coins:
             print(str(c))
         print('len of collided_coins: ' + str(len(collected_coins)))
-        # for coin in coins:
-        #     print('coin at: ' + str(coin.pos))
+        for coin in coins:
+            print('coin at: ' + str(coin.pos))
 
     FramePerSec.tick(const.FPS)
     pygame.display.update()

@@ -1,4 +1,4 @@
-class Constants():
+class Constants:
     def __init__(self):
 
         self.HEIGHT = 900

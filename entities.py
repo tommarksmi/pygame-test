@@ -62,7 +62,7 @@ class Coin(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         # self.center = self.rect.center
 
-    def move(self):
+    def move_coin(self):
         self.rect.center = self.pos
 
     ## move_to is not used think about removing...
@@ -85,8 +85,8 @@ class Coin(pygame.sprite.Sprite):
         else:
             self.current_image_index += 1
         self.image = self.images[self.current_image_index]
-        # self.rect = self.image.get_rect()
-
+        self.rect = self.image.get_rect()
+        self.move_coin()
 
 
 class Player(pygame.sprite.Sprite):
@@ -157,7 +157,8 @@ class BoundingBox(pygame.sprite.Sprite):
         self.surf = pygame.Surface((bounded_sprite.width + 40, bounded_sprite.height + 40))
         self.rect = self.surf.get_rect()
 
-class GameRound():
+
+class GameRound:
     def __init__(self, coins: list):
         self.coins_in_play = coins
         self.coin_group = pygame.sprite.Group(coins)
